@@ -1,0 +1,54 @@
+github の使い方
+
+
+  +------------------+
+  |リモートリポジトリ|  <---------- パブリック
+  +------------------+
+          ^
+          |プッシュ(送信)
+          |
+  +------------------+
+  |ローカルリポジトリ|  <---------- ユーザー
+  +------------------+    コミット
+
+1.ユーザーがローカルリポジトリにコミットする。
+2.その後プッシュコマンドを使ってリモートリポジトリにプッシュする
+
+
+手順
+■ローカル環境にリポジトリを作る
+ mkdir -p github/gittest
+ cd github/gittest
+ git init
+ ※initコマンドでローカルリポジトリが作成されます。
+
+■ローカルリポジトリ内にリモートリポジトリのクローンを作成
+git clone https://github.com/ST-94-MAS/0909.git
+
+■ファイルをローカルリポジトリに登録（コミット）してみる
+ github/gittest以下に適当なファイルをおく
+ 例  test.txt
+ 
+ git add test.txt
+ 
+ これでインデックスに追加される
+ インデックスに追加されたらコミットを使ってローカルリポジトリに登録する。
+
+1）変更をインデックスに追加
+$ git add test.txt
+
+2）ファイルを登録（コミット）
+$ git commit -m "change"
+
+3）データの送信
+$ git push origin master
+ST-94-MAS/Choshiryu100m
+
+
+※パスワードが聞かれるのが面倒な場合
+$HOME以下に.netrcを作成
+ cd $HOME
+ vi .netrc
+machine github.com
+login ST-94-MAS
+password Choshiryu100m
