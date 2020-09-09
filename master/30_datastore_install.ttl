@@ -1,0 +1,69 @@
+;=====================================================================
+; ★ArcGIS Datastore Install マクロ★
+;=====================================================================
+include '99_login.ttl'
+sendln
+sendln
+sendln
+pause 5
+sendln 'su '
+pause 3
+sendln PASSWORD
+sendln
+sendln
+sendln '/sbin/sysctl -w vm.max_map_count=2621144'
+pause 4
+sendln '/sbin/sysctl -w vm.swappiness=1'
+pause 4
+sendln
+sendln 'exit'
+sendln
+pause 3
+sendln APATH
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;ArcGIS Datastore の解凍 必要であればコメントを外してください。
+;sendln
+;pause 1
+;sendln 'find -type f -name "*DataStore*.tar.gz" -exec tar zvxf {} \;'
+;pause 1
+;flushrecv
+;wait ']$'
+;pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS DatastoreのInstall
+DATAINSTALL =  'find ./*DataStore* -type f -name "Setup" -exec {} -m silent -l yes '
+strconcat DATAINSTALL '-d $HOME/arcgis/datastore'  ;default値
+strconcat DATAINSTALL ' \; | tee -a $HOME/Downloads/'
+strconcat DATAINSTALL DATASTORELOGFILE
+sendln DATAINSTALL
+pause 1
+flushrecv
+wait ']$'
+pause 1
+
+
+pause 20
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;データ ストア構成ウィザードを使用したデータ ストアの作成
+sendln 'cd $HOME/arcgis/datastore'
+MAKEWEBDATASTORE = 'find ./ -type f -name "configuredatastore.sh" -exec {} https://'
+strconcat MAKEWEBDATASTORE FQDN
+strconcat MAKEWEBDATASTORE ':6443 '
+strconcat MAKEWEBDATASTORE SERVERSITEUSER
+strconcat MAKEWEBDATASTORE ' '
+strconcat MAKEWEBDATASTORE SERVERSITEPASS
+strconcat MAKEWEBDATASTORE ' '
+strconcat MAKEWEBDATASTORE '$HOME/arcgis/datastore/dstore/data --stores relational,tileCache '
+strconcat MAKEWEBDATASTORE '\; | tee -a $HOME/Downloads/'
+strconcat MAKEWEBDATASTORE DATASTORELOGFILE
+sendln MAKEWEBDATASTORE
+pause 3
+flushrecv
+wait ']$'
+pause 1
+sendln
+sendln
+sendln
+exit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

@@ -1,0 +1,395 @@
+
+;=====================================================================
+; ★設定内容変更箇所★
+; 入力はすべて''内にしてください。
+;=====================================================================
+; 接続情報
+include '99_super_login.ttl'
+;=====================================================================
+; ★設定内容変更箇所終わり★
+;=====================================================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;  ※ ISOファイルまたはDVDを必ず挿入してください
+
+;=====================================================================
+
+sendln
+sendln
+sendln
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+sendln
+sendln
+sendln
+pause 4
+sendln
+sendln 'mount /dev/sr0 /mnt'
+sendln 'cd /mnt/Packages/'
+sendln 'rpm -Uvh --nodeps vsftpd-*'
+pause 4
+sendln 'rpm -Uvh --nodeps httpd-*'
+pause 4
+sendln 'rpm -Uvh --nodeps tomcat*'
+pause 4
+sendln 'rpm -Uvh --nodeps mod_ssl*'
+pause 4
+sendln 'rpm -Uvh --nodeps chrony-*'
+pause 4
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;start up
+
+pause 1
+sendln 'systemctl enable vsftpd'
+pause 3
+sendln 'systemctl enable tomcat'
+pause 3
+sendln 'systemctl enable httpd'
+pause 3
+sendln 'systemctl start chronyd'
+pause 1
+sendln 'systemctl enable chronyd'
+pause 1
+sendln 'timedatectl set-timezone Asia/Tokyo'
+pause 1
+sendln 'timedatectl'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;hostsの編集
+sendln 'vi /etc/hosts'
+pause 1
+send 'G'
+pause 1
+send 'o'
+HOSTS = IPADDR
+strconcat HOSTS ' '
+strconcat HOSTS FQDN
+
+send HOSTS
+pause 1
+sendln #$1B
+sendln ':wq'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;firewallのport開放
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;serverで使用するport
+sendln 'firewall-cmd --add-port=1098/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=1098/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=4000-4004/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=4000-4004/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6006/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6006/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6080/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6080/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6443/udp --zone=public --permanent'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;data storeで使用するport
+sendln 'firewall-cmd --add-port=2443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=2443/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9876/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9876/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=29080-29081/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=29080-29081/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9220/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9220/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9320/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9320/udp --zone=public --permanent'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;portalで使用するport
+
+sendln 'firewall-cmd --add-port=7080/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7080/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7443/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=5701-5703/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=5701-5703/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7005/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7005/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7099/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7099/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7199/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7199/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7120/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7120/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7220/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7220/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7654/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7654/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=443/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=80/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=80/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --reload'
+pause 2
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;limitの編集
+sendln 'vi /etc/security/limits.conf'
+pause 1
+send 'G'
+send 'o'
+
+
+LINE1 =LOCALUSER 
+LINE2 =LOCALUSER 
+LINE3 =LOCALUSER 
+LINE4 =LOCALUSER 
+LINE5 =LOCALUSER 
+LINE6 =LOCALUSER 
+
+
+strconcat LINE1 '       soft    nofile          65535'
+strconcat LINE2 '       hard    nofile          65535'
+strconcat LINE3 '       soft    nproc           25059'
+strconcat LINE4 '       hard    nproc           25059'
+strconcat LINE5 '       soft    nofile          65536'
+strconcat LINE6 '       hard    nofile          65536'
+
+sendln LINE1
+sendln LINE2
+sendln LINE3
+sendln LINE4
+sendln LINE5
+sendln LINE6
+pause 1
+sendln #$1B
+sendln ':wq'
+pause 2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;証明書の作成
+sendln
+sendln
+sendln
+pause 1
+sendln 'cd /etc/httpd/conf/'
+sendln 'mkdir ssl'
+sendln 'cd ssl'
+pause 1
+sendln 'cat << EOF > v3.txt'
+sendln 'authorityKeyIdentifier=keyid,issuer'
+sendln 'basicConstraints=CA:FALSE'
+sendln 'keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment'
+sendln 'subjectAltName=DNS:`hostname`'
+sendln 'extendedKeyUsage=serverAuth,clientAuth'
+sendln 'EOF'
+sendln 
+;ssl 秘密鍵
+sendln 'openssl genrsa -out server.key 2048'
+pause 2
+;ssl 公開鍵
+CSR = 'openssl req -new -key server.key -out server.csr -subj "/C=JP/ST=Tokyo/L=Chiyoda/O=esrij/OU=PP2G/CN='
+strconcat CSR FQDN
+strconcat CSR '"'
+sendln CSR
+;ssl サーバー証明書
+pause 2
+sendln 'openssl x509 -in server.csr -req -out server.crt -days 3650 -signkey server.key -sha256 -extfile v3.txt'
+pause 2
+sendln 'openssl rsa -in server.key -out server.key'
+pause 2
+PFX = 'openssl pkcs12 -export -name "SelfCertificate" -out server.pfx -inkey server.key -in server.crt -passout pass:'
+strconcat PFX SERVERKEY
+sendln PFX
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;SELinuxの修正(今後使用可能にする予定)
+sendln 'vi /etc/selinux/config'
+pause 1
+sendln ':7'
+send 'dd'
+send 'i'
+pause 1
+sendln'SELINUX=disabled'
+pause 1
+send #$1B
+pause 1
+sendln ':wq'
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;tomcatとApacheの連携
+
+; tomcat 用の証明書作成と配置
+sendln 'cd /usr/share/tomcat/conf/'
+sendln 'keytool -genkey -alias tomcat -keyalg RSA -keystore tomcat.keystore'
+pause 2
+sendln SERVERKEY
+pause 2
+sendln SERVERKEY
+pause 2
+sendln 'admin'
+pause 1
+sendln 'esrij'
+pause 1
+sendln 'PP2G'
+pause 1
+sendln 'Chiyoda'
+pause 1
+sendln 'Tokyo'
+pause 1
+sendln 'JP'
+pause 1
+sendln 'y'
+pause 2
+sendln SERVERKEY
+pause 2
+sendln SERVERKEY
+pause 2
+
+pause 1
+sendln 'vi /usr/share/tomcat/conf/server.xml'
+pause 2
+sendln '/Connector port="8080" protocol="HTTP'
+send 'I'
+pause 2
+send '<!--'
+send #$1B
+sendln '/redirectPort="8443"'
+pause 2
+send 'A'
+pause 2
+send '-->'
+send #$1B
+pause 2
+sendln '/org.apache.coyote.http11'
+send 'k'
+sendln 'dd'
+sendln '/certificateKeystoreFile'
+sendln ':s/localhost-rsa.jks/tomcat.keystore'
+sendln 'A'
+SERNAME00 ='                         certificateKeystorePassword="'
+strconcat SERNAME00 SERVERKEY
+strconcat SERNAME00 '"'
+sendln SERNAME00
+sendln'                         certificateKeyAlias="tomcat"'
+sendln'                         certificateKeystoreProvider="SUN"'
+send'                         certificateKeystoreType="JKS"'
+send #$1B
+sendln '/-->'
+sendln 'dd'
+sendln ':wq'
+;pause 5
+pause 1
+sendln 'vi /etc/httpd/conf/httpd.conf'
+pause 1
+sendln 'G'
+sendln 'o'
+pause 1
+sendln 'LoadModule proxy_module modules/mod_proxy.so'
+sendln 'LoadModule proxy_ajp_module modules/mod_proxy_ajp.so'
+sendln 'Include /etc/httpd/conf/httpd-proxy.conf'
+pause 1
+
+send #$1B
+pause 1
+sendln ':wq'
+
+pause 1
+sendln 'vi /etc/httpd/conf/httpd-proxy.conf'
+pause 1
+send 'i'
+sendln 'ProxyPass /portal/  ajp://localhost:8009/portal/'
+sendln 'ProxyPass /portal/  ajp://localhost:8009/portal/webadaptor/'
+sendln 'ProxyPass /server/  ajp://localhost:8009/server/'
+sendln 'ProxyPass /sample/  ajp://localhost:8009/sample/'
+pause 1
+send #$1B
+sendln ':wq'
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;tomcatとApacheの連携2
+pause 1
+
+sendln 'vi /etc/httpd/conf.d/ssl.conf'
+pause 3
+sendln '/SSLPassPhraseDialog exec:/usr/libexec/httpd-ssl-pass-dialog'
+
+send 'i'
+send '#'
+send #$1B
+
+sendln '/#ServerName www.example.com:443'
+SERVERNAME = 'ServerName '
+strconcat SERVERNAME FQDN
+strconcat SERVERNAME ':443'
+send 'o'
+send SERVERNAME
+send #$1B
+
+sendln '/localhost.crt'
+send 'I'
+send '#'
+send #$1B
+send 'o'
+send 'SSLCertificateFile /etc/httpd/conf/ssl/server.crt'
+send #$1B
+
+sendln '/localhost.key'
+send 'I'
+send '#'
+send #$1B
+send 'o'
+send 'SSLCertificateKeyFile /etc/httpd/conf/ssl/server.key'
+send #$1B
+
+sendln ':wq'
+pause 1
+
+
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+pause 10
+
+sendln 'reboot'

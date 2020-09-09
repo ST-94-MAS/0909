@@ -1,0 +1,42 @@
+;=====================================================================
+; ★ArcGIS Web Adaptor Install後 Adaptor経由でServerに接続する マクロ★
+;=====================================================================
+
+include '99_login.ttl'
+
+sendln
+sendln
+sendln
+sendln
+
+pause 13
+sendln
+sendln 'cd $HOME/arcgis/web*'
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS Web Adaptor 経由でServerに接続する
+
+MAKEWEBADASER = 'find ./ -type f -name "configurewebadaptor.sh" -exec {} -m '
+strconcat MAKEWEBADASER 'server '
+strconcat MAKEWEBADASER '-w '
+strconcat MAKEWEBADASER 'https://'
+strconcat MAKEWEBADASER FQDN
+strconcat MAKEWEBADASER '/server/webadaptor'
+strconcat MAKEWEBADASER ' -g '
+strconcat MAKEWEBADASER 'https://'
+strconcat MAKEWEBADASER FQDN
+strconcat MAKEWEBADASER ':6443'
+strconcat MAKEWEBADASER ' -u '
+strconcat MAKEWEBADASER SERVERSITEUSER
+strconcat MAKEWEBADASER ' -p '
+strconcat MAKEWEBADASER SERVERSITEPASS
+strconcat MAKEWEBADASER ' -a '
+strconcat MAKEWEBADASER 'true '
+strconcat MAKEWEBADASER ' \; | tee -a $HOME/Downloads/'
+strconcat MAKEWEBADASER WEBADAPLOGFILE
+sendln MAKEWEBADASER
+pause 1
+flushrecv
+wait ']$'
+
+pause 13
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1,0 +1,38 @@
+;=====================================================================
+; ★ArcGIS Web Adaptor マクロ★
+;=====================================================================
+
+include '99_login.ttl'
+
+sendln
+sendln
+sendln
+sendln
+
+pause 3
+sendln APATH
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;Enterprise の解凍 必要であればコメントを外してください。
+;sendln
+;pause 1
+;sendln 'find -type f -name "WebAdaptor*.tar.gz" -exec tar zvxf {} \; &> $HOME/Downloads/portal.txt '
+;pause 1
+;flushrecv
+;wait ']$'
+;pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS WebAdaptorのInstall
+pause 2
+sendln
+ADAPTORINSTALL= 'find ./WebAdaptor* -type f -name "Setup" -exec {} -m silent -l yes \; | tee -a $HOME/Downloads/'
+strconcat ADAPTORINSTALL WEBADAPLOGFILE
+sendln ADAPTORINSTALL
+pause 1
+flushrecv
+wait ']$'
+pause 1
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

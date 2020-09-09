@@ -1,0 +1,503 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;=====================================================================
+; ★設定内容変更箇所★
+; 入力はすべて''内にしてください。
+;=====================================================================
+; 接続情報
+include '99_super_login.ttl'
+;=====================================================================
+sendln
+sendln
+sendln
+pause 4
+sendln
+pause 4
+sendln
+sendln 'yum install -y vsftpd-*'
+pause 8
+sendln 'yum install -y httpd-*'
+pause 8
+sendln 'yum install -y mod_ssl*'
+pause 8
+sendln 'yum install -y chrony-*'
+pause 8
+sendln 'yum install -y wget'
+pause 28
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;start up
+
+pause 1
+sendln 'systemctl enable vsftpd'
+pause 2
+sendln 'systemctl enable httpd'
+pause 2
+sendln 'systemctl start chronyd'
+pause 2
+sendln 'systemctl enable chronyd'
+pause 1
+sendln 'timedatectl set-timezone Asia/Tokyo'
+pause 2
+sendln 'timedatectl'
+pause 5
+;cockpitを使用可能に
+sendln 'systemctl enable --now cockpit.socket'
+pause 4
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;hostsの編集
+sendln 'cp /etc/hosts /etc/hosts.bk'
+sendln 'vi /etc/hosts'
+pause 1
+send 'G'
+pause 1
+send 'o'
+HOSTS = IPADDR
+strconcat HOSTS ' '
+strconcat HOSTS FQDN
+
+send HOSTS
+pause 1
+sendln #$1B
+sendln ':wq'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;firewallのport開放
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;serverで使用するport
+sendln 'firewall-cmd --add-port=1098/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=1098/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=4000-4004/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=4000-4004/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6006/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6006/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6080/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6080/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=6443/udp --zone=public --permanent'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;data storeで使用するport
+sendln 'firewall-cmd --add-port=2443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=2443/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9876/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9876/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=29080-29081/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=29080-29081/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9220/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9220/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9320/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=9320/udp --zone=public --permanent'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;portalで使用するport
+
+sendln 'firewall-cmd --add-port=7080/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7080/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7443/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=5701-5703/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=5701-5703/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7005/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7005/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7099/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7099/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7199/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7199/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7120/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7120/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7220/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7220/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7654/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=7654/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=443/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=443/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=80/tcp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --add-port=80/udp --zone=public --permanent'
+pause 1
+sendln 'firewall-cmd --reload'
+pause 2
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;limitの編集
+sendln 'cp /etc/security/limits.conf /etc/security/limits.conf.bk'
+sendln 'vi /etc/security/limits.conf'
+pause 1
+send 'G'
+send 'o'
+
+
+LINE1 =LOCALUSER 
+LINE2 =LOCALUSER 
+LINE3 =LOCALUSER 
+LINE4 =LOCALUSER 
+LINE5 =LOCALUSER 
+LINE6 =LOCALUSER 
+
+
+strconcat LINE1 '       soft    nofile          65535'
+strconcat LINE2 '       hard    nofile          65535'
+strconcat LINE3 '       soft    nproc           25059'
+strconcat LINE4 '       hard    nproc           25059'
+strconcat LINE5 '       soft    nofile          65536'
+strconcat LINE6 '       hard    nofile          65536'
+
+sendln LINE1
+sendln LINE2
+sendln LINE3
+sendln LINE4
+sendln LINE5
+sendln LINE6
+pause 1
+sendln #$1B
+sendln ':wq'
+pause 2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;証明書の作成
+sendln
+sendln
+sendln
+pause 1
+sendln 'cd /etc/httpd/conf/'
+sendln 'mkdir ssl'
+sendln 'cd ssl'
+pause 1
+sendln 'cat << EOF > v3.txt'
+sendln 'authorityKeyIdentifier=keyid,issuer'
+sendln 'basicConstraints=CA:FALSE'
+sendln 'keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment'
+send   'subjectAltName=DNS:'
+sendln FQDN
+sendln 'extendedKeyUsage=serverAuth,clientAuth'
+sendln 'EOF'
+sendln 
+;ssl 秘密鍵
+sendln 'openssl genrsa -out server.key 2048'
+pause 2
+;ssl 公開鍵
+CSR = 'openssl req -new -key server.key -out server.csr -subj "/C=JP/ST=Tokyo/L=Chiyoda/O=esrij/OU=PP2G/CN='
+strconcat CSR FQDN
+strconcat CSR '"'
+sendln CSR
+;ssl サーバー証明書
+pause 2
+sendln 'openssl x509 -in server.csr -req -out server.crt -days 3650 -signkey server.key -sha256 -extfile v3.txt'
+pause 2
+sendln 'openssl rsa -in server.key -out server.key'
+pause 2
+PFX = 'openssl pkcs12 -export -name "SelfCertificate" -out server.pfx -inkey server.key -in server.crt -passout pass:'
+strconcat PFX SERVERKEY
+sendln PFX
+pause 1
+
+sendln 'touch /etc/mime.types'
+pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;SELinuxの修正(今後使用可能にする予定)
+sendln 'vi /etc/selinux/config'
+pause 1
+sendln ':7'
+send 'dd'
+send 'i'
+pause 1
+sendln'SELINUX=disabled'
+pause 1
+send #$1B
+pause 1
+sendln ':wq'
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;tomcatとApacheの連携
+;------------------------------------------------------------------------------
+; JDK をインストール (keytool コマンド使用のため)
+sendln 'yum -y install java-1.8.0-*'
+pause 1
+flushrecv
+wait ']#'
+pause 1
+
+; .bashrc に JAVA_HOME, PATH 追記
+sendln 'vi ~/.bashrc'
+pause 1
+send 'G'
+pause 1
+send 'o'
+sendln 'export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-2.el8_1.x86_64'
+sendln 'export PATH=$PATH:$JAVA_HOME/bin'
+pause 1
+sendln #$1B
+sendln ':wq'
+pause 1
+
+; .bashrc を読み込んで反映
+sendln 'source ~/.bashrc'
+
+;Tomcat 9 のインストールと権限の設定
+sendln 'cd /usr/libexec/'
+sendln 'curl -O http://ftp.riken.jp/net/apache/tomcat/tomcat-9/v9.0.36/bin/apache-tomcat-9.0.36.tar.gz'
+pause 1
+sendln 'tar xvfz apache-tomcat-9.0.36.tar.gz'
+pause 3
+sendln 'mv apache-tomcat-9.0.36 tomcat9'
+pause 1
+sendln 'useradd -M -d /usr/libexec/tomcat9 tomcat'
+pause 1
+sendln 'chown -R tomcat. /usr/libexec/tomcat9'
+pause 1
+
+; tomcat 用の証明書作成と配置
+sendln 'keytool -genkey -alias tomcat -keyalg RSA -keystore /usr/libexec/tomcat9/conf/tomcat.keystore'
+pause 1
+sendln SERVERKEY
+pause 1
+sendln SERVERKEY
+pause 1
+sendln 'admin'
+pause 1
+sendln 'esrij'
+pause 1
+sendln 'esrij_Team'
+pause 1
+sendln 'Chiyoda'
+pause 1
+sendln 'Tokyo'
+pause 1
+sendln 'JP'
+pause 1
+sendln 'y'
+pause 1
+sendln SERVERKEY
+pause 1
+sendln SERVERKEY
+pause 1
+
+;Systemd 設定ファイル
+sendln 'cat << EOF > /usr/lib/systemd/system/tomcat9.service'
+sendln '[Unit]'
+sendln 'Description=Apache Tomcat 9'
+sendln 'After=network.target'
+sendln ''
+sendln '[Service]'
+sendln 'Type=oneshot'
+sendln 'ExecStart=/usr/libexec/tomcat9/bin/startup.sh'
+sendln 'ExecStop=/usr/libexec/tomcat9/bin/shutdown.sh'
+sendln 'RemainAfterExit=yes'
+sendln 'User=tomcat'
+sendln 'Group=tomcat'
+sendln ''
+sendln '[Install]'
+sendln 'WantedBy=multi-user.target'
+sendln 'EOF'
+
+;SELinuxを有効にしている場合はtomcatを起動するためにポリシーの許可を設定する
+;sendln 'cat << EOF > catalinash.te'
+;sendln 'module catalinash 1.0;'
+;sendln ''
+;sendln 'require {'
+;sendln '        type init_t;'
+;sendln '        type admin_home_t;'
+;sendln '        class file { append execute execute_no_trans ioctl open read };'
+;sendln '}'
+;sendln ''
+;sendln '#============= init_t =============='
+;sendln 'allow init_t admin_home_t:file { append execute execute_no_trans ioctl open read };'
+;sendln 'EOF'
+;pause 1
+;Firewallを有効にしている場合にアクセスを有効にする。
+;sendln 'checkmodule -m -M -o catalinash.mod catalinash.te'
+;pause 10
+;sendln 'semodule_package --outfile catalinash.pp --module catalinash.mod'
+;pause 10
+;sendln 'semodule -i catalinash.pp'
+;pause 20
+;sendln 'firewall-cmd --add-port=8080/tcp --permanent'
+;pause 1
+;sendln 'firewall-cmd --reload'
+;pause 1
+sendln 'systemctl enable tomcat9'
+pause 3
+sendln 'systemctl start tomcat9'
+pause 3
+;--------------------------------------------------------------------------------
+pause 1
+sendln 'cp /usr/libexec/tomcat9/conf/server.xml /usr/libexec/tomcat9/conf/server.xml.bk'
+sendln 'vi /usr/libexec/tomcat9/conf/server.xml'
+pause 2
+sendln '/Connector port="8080" protocol="HTTP'
+send 'I'
+pause 2
+send '<!--'
+send #$1B
+sendln '/redirectPort="8443"'
+pause 2
+send 'A'
+pause 2
+send '-->'
+send #$1B
+pause 2
+sendln '/org.apache.coyote.http11'
+send 'k'
+pause 2
+
+sendln '9dd'
+send '2k'
+pause 2
+send'o'
+pause 2
+sendln '    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"'
+sendln '            maxThreads="150" SSLEnabled="true" scheme="https" secure="true"'
+sendln '                 certificateKeystoreFile="conf/tomcat.keystore"'
+SERNAME00 ='                         certificateKeystorePassword="'
+strconcat SERNAME00 SERVERKEY
+strconcat SERNAME00 '"'
+sendln SERNAME00
+sendln'                         certificateKeyAlias="tomcat"'
+sendln'                         certificateKeystoreProvider="SUN"'
+sendln'                         certificateKeystoreType="JKS"'
+sendln'                           clientAuth="false" sslProtocol="TLS"/>'
+pause 2
+send #$1B
+sendln '/protocol="org.apache.coyote.http11.Http11AprProtocol"'
+pause 1
+sendln '/ -->'
+pause 1
+send 'o'
+pause 1
+sendln '    <!-- Define an AJP 1.3 Connector on port 8009 -->'
+sendln '    <Connector port="8009"'
+sendln '               protocol="AJP/1.3"'
+sendln '               redirectPort="8443"'
+send '               address="'
+send FQDN
+sendln '"'
+sendln '               requiredSecret = "esrij" />'
+send #$1B
+sendln ':wq'
+;pause 5
+pause 1
+sendln 'cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.bk'
+sendln 'vi /etc/httpd/conf/httpd.conf'
+pause 1
+sendln 'G'
+sendln 'o'
+pause 1
+sendln 'LoadModule proxy_module modules/mod_proxy.so'
+sendln 'LoadModule proxy_ajp_module modules/mod_proxy_ajp.so'
+sendln 'Include /etc/httpd/conf/httpd-proxy.conf'
+pause 1
+
+send #$1B
+pause 2
+sendln ':wq'
+pause 1
+sendln 'vi /etc/httpd/conf/httpd-proxy.conf'
+pause 1
+send 'i'
+send 'ProxyPass /portal/  ajp://'
+send FQDN
+sendln ':8009/portal/ secret=esrij'
+send 'ProxyPass /portal/  ajp://
+send FQDN
+sendln ':8009/portal/webadaptor/ secret=esrij'
+send 'ProxyPass /server/  ajp://'
+send FQDN
+sendln ':8009/server/ secret=esrij'
+;sendln 'ProxyPass /sample/  ajp://localhost:8009/sample/ secret=esrij'
+pause 1
+send #$1B
+sendln ':wq'
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;tomcatとApacheの連携2
+pause 1
+sendln 'cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bk'
+sendln 'vi /etc/httpd/conf.d/ssl.conf'
+pause 3
+sendln '/SSLPassPhraseDialog exec:/usr/libexec/httpd-ssl-pass-dialog'
+
+send 'i'
+send '#'
+send #$1B
+
+sendln '/#ServerName www.example.com:443'
+SERVERNAME = 'ServerName '
+strconcat SERVERNAME FQDN
+strconcat SERVERNAME ':443'
+send 'o'
+send SERVERNAME
+send #$1B
+
+sendln '/localhost.crt'
+send 'I'
+send '#'
+send #$1B
+send 'o'
+send 'SSLCertificateFile /etc/httpd/conf/ssl/server.crt'
+send #$1B
+
+sendln '/localhost.key'
+send 'I'
+send '#'
+send #$1B
+send 'o'
+send 'SSLCertificateKeyFile /etc/httpd/conf/ssl/server.key'
+send #$1B
+
+sendln ':wq'
+pause 1
+
+
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+pause 10
+
+sendln 'reboot'

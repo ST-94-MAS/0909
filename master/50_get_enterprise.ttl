@@ -1,0 +1,289 @@
+;=====================================================================
+; ★ArcGIS EnterpriseのInstallerを取得します。★
+;=====================================================================
+
+
+include '99_login.ttl'
+
+
+;;Enterpriseのversionを変更してください。
+strdim VERSION 6
+VERSION[0] = '10.8.1'
+VERSION[1] = '10.8'
+VERSION[2] = '10.7.1'
+VERSION[3] = '10.7'
+VERSION[4] = '10.6.1'
+VERSION[5] = '10.6'
+;VERSION[4] = '10.5.1'
+;VERSION[5] = '10.5'
+
+strdim LANG 2
+LANG[0]    = '日本語版'
+LANG[1]    = '英語版' 
+
+
+listbox '使用したいEnterpriseのバージョンを選択してください' 'バージョン選択' VERSION
+if result != -1 then
+    REVERSION = VERSION[result]
+else
+    end
+endif
+
+listbox '使用したいEnterpriseの言語を選択してください' '言語選択' LANG
+if result != -1 then
+    RELANG = LANG[result]
+else
+    end
+endif
+
+num=1
+while num
+yesnobox 'ArcGIS Portal をダウンロードしますか？' 'Tera Term'
+if result=1 then
+portaldl=1
+else
+portaldl=0
+endif
+
+
+yesnobox 'ArcGIS Server をダウンロードしますか？' 'Tera Term'
+if result=1 then
+serverdl=1
+else
+serverdl=0
+endif
+
+
+yesnobox 'ArcGIS Datastore をダウンロードしますか？' 'Tera Term'
+if result=1 then
+datastoredl=1
+else
+datastoredl=0
+endif
+
+
+yesnobox 'ArcGIS Webadaptor をダウンロードしますか？' 'Tera Term'
+if result=1 then
+adaptordl=1
+else
+adaptordl=0
+endif
+
+yesnobox ' ダウンロードしますか？' 'Tera Term'
+if result=1 then
+num=0
+else
+num=1
+messagebox '選びなおしてください' 'main.ttl'
+endif
+endwhile
+
+
+; Guest OS Path
+STORE      = '/home/'
+strconcat STORE LOCALUSER
+strconcat STORE '/Downloads/10.8.1/' ;後でDownloadsに変更する
+
+SERVERFILE     = STORE
+PORTALFILE     = STORE
+WEBADAPTORFILE = STORE
+DATASOTEFILE   = STORE
+PORTOAUTH      = STORE
+SERVERAUTH     = STORE
+
+
+;=====================================================================
+
+pause 2
+sendln
+sendln
+sendln
+
+
+strcompare REVERSION '10.6'
+if result = 0 then
+     P_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\Authorization\Portal\portal_authorization.ecp'
+     S_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\Authorization\Server\serveradv_authorization.ecp'
+     strconcat PORTOAUTH '\authorization.ecp'
+     strconcat SERVERAUTH '\server_adv_authorization.ecp'
+     strmatch RELANG '英語'
+   if result = 1 then
+     pause 2
+     ;sendln '10.6    英語'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\ArcGIS_DataStore_Linux_106_161810.tar.gz'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\ArcGIS_Server_Linux_106_159989.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\Portal_for_ArcGIS_Linux_106_161809.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\Web_Adaptor_Java_Linux_106_161911.tar.gz'
+   else
+     pause 2
+     ;sendln '10.6    日本語'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\ArcGIS_DataStore_Linux_106_161810.tar.gz'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\ArcGIS_Server_Linux_106_159989.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\Portal_for_ArcGIS_Linux_106_161809.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\英語版\Linux\Web_Adaptor_Java_Linux_106_161911.tar.gz'
+   endif
+else
+endif
+
+strcompare REVERSION '10.6.1'
+if result = 0 then
+     P_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\Authorization\Portal\portal_authorization.ecp'
+     S_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6\Authorization\Server\serveradv_authorization.ecp'
+     strconcat PORTOAUTH '\authorization.ecp'
+     strconcat SERVERAUTH '\server_adv_authorization.ecp'
+     strmatch RELANG '英語'
+   if result = 1 then
+     pause 2
+     ;sendln '10.6.1    英語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\英語版\Linux\ArcGIS_Server_Linux_1061_164044.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\英語版\Linux\Web_Adaptor_Java_Linux_1061_164057.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\英語版\Linux\ArcGIS_DataStore_Linux_1061_164056.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\英語版\Linux\Portal_for_ArcGIS_Linux_1061_164055.tar.gz'
+   else
+     pause 2
+     ;sendln '10.6.1    日本語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\日本語版\Linux\ArcGIS_Server_Linux_1061_ja_164050.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\日本語版\Linux\Web_Adaptor_Java_Linux_1061_ja_164063.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\英語版\Linux\ArcGIS_DataStore_Linux_1061_164056.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.6.1\英語版\Linux\Portal_for_ArcGIS_Linux_1061_164055.tar.gz'
+   endif
+else
+endif
+
+strcompare REVERSION '10.7'
+if result = 0 then
+     P_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\Authorization\Portal\ArcGIS_Enterprise_Portal_1071_325213_20200714.json'
+     S_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\Authorization\Server\serveradv_authorization.ecp'
+     strconcat PORTOAUTH '\authorization.json'
+     strconcat SERVERAUTH '\server_adv_authorization.ecp'
+   strmatch RELANG '英語'
+   if result = 1 then
+     pause 2
+     ;sendln '10.7    英語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\英語版\Linux\ArcGIS_Server_Linux_107_167707.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\英語版\Linux\Web_Adaptor_Java_Linux_107_167720.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\英語版\Linux\ArcGIS_DataStore_Linux_107_167719.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\英語版\Linux\Portal_for_ArcGIS_Linux_107_167718.tar.gz'
+   else
+     pause 2
+     ;sendln '10.7    日本語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\日本語版\Linux\ArcGIS_Server_Linux_107_ja_167713.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\日本語版\Linux\Web_Adaptor_Java_Linux_107_ja_167726.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\英語版\Linux\ArcGIS_DataStore_Linux_107_167719.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\英語版\Linux\Portal_for_ArcGIS_Linux_107_167718.tar.gz'
+   endif
+else
+endif
+
+strcompare REVERSION '10.7.1'
+if result = 0 then
+     P_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\Authorization\Portal\ArcGIS_Enterprise_Portal_1071_325213_20200714.json'
+     S_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7\Authorization\Server\serveradv_authorization.ecp'
+     strconcat PORTOAUTH '\authorization.json'
+     strconcat SERVERAUTH '\server_adv_authorization.ecp'
+     strmatch RELANG '英語'
+   if result = 1 then
+     pause 2
+     ;sendln '10.7.1    英語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\英語版\Linux\ArcGIS_Server_Linux_1071_169796.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\英語版\Linux\Web_Adaptor_Java_Linux_1071_169645.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\英語版\Linux\Portal_for_ArcGIS_Linux_1071_169807.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\英語版\Linux\ArcGIS_DataStore_Linux_1071_169808.tar.gz'
+   else
+     pause 2
+     ;sendln '10.7.1    日本語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\日本語版\Linux\ArcGIS_Server_Linux_1071_ja_169802.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\日本語版\Linux\Web_Adaptor_Java_Linux_1071_ja_169821.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\英語版\Linux\Portal_for_ArcGIS_Linux_1071_169807.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.7.1\英語版\Linux\ArcGIS_DataStore_Linux_1071_169808.tar.gz'
+   endif
+else
+endif
+
+strcompare REVERSION '10.8'
+if result = 0 then
+     P_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\Authorization\Portal\ArcGIS_Enterprise_Portal_108_325212_20200714.json'
+     S_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\Authorization\Server\serveradv_authorization.ecp'
+     strconcat PORTOAUTH '\authorization.json'
+     strconcat SERVERAUTH '\server_adv_authorization.ecp'
+   strmatch RELANG '英語'
+   if result = 1 then
+     pause 1
+     ;sendln '10.8    英語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\英語_コア\Linux\ArcGIS_Server_Linux_108_172977.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\英語_コア\Linux\Web_Adaptor_Java_Linux_108_172992.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\英語_コア\Linux\Portal_for_ArcGIS_Linux_108_172989.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\英語_コア\Linux\ArcGIS_DataStore_Linux_108_172991.tar.gz'
+     
+   else
+     pause 2
+     ;sendln '10.8    日本語'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\日本語\linux\Web_Adaptor_Java_Linux_108_ja_172998.tar.gz'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\日本語\linux\ArcGIS_Server_Linux_108_ja_172983.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\英語_コア\Linux\Portal_for_ArcGIS_Linux_108_172989.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\英語_コア\Linux\ArcGIS_DataStore_Linux_108_172991.tar.gz'
+   endif
+else
+endif
+
+strcompare REVERSION '10.8.1'
+if result = 0 then
+     P_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\Authorization\Portal\ArcGIS_Enterprise_Portal_108_325212_20200714.json'
+     S_ORIZATION='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8\Authorization\Server\serveradv_authorization.ecp'
+     strconcat PORTOAUTH '\authorization.json'
+     strconcat SERVERAUTH '\server_adv_authorization.ecp'
+     strmatch RELANG '英語'
+   if result = 1 then
+     pause 2
+     ;sendln '10.8.1    英語'
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\en_core\linux\ArcGIS_Server_Linux_1081_175289.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\en_core\linux\ArcGIS_Web_Adaptor_Java_Linux_1081_175313.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\en_core\linux\Portal_for_ArcGIS_Linux_1081_175300.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\en_core\linux\ArcGIS_DataStore_Linux_1081_175312.tar.gz'
+     strconcat SERVERFILE 'ArcGIS_Server_Linux_1081_175289.tar.gz'
+     strconcat WEBADAPTORFILE 'ArcGIS_Web_Adaptor_Java_Linux_1081_175313.tar.gz'
+     strconcat PORTALFILE 'Portal_for_ArcGIS_Linux_1081_175300.tar.gz'
+     strconcat DATASOTEFILE 'ArcGIS_DataStore_Linux_1081_175312.tar.gz'
+   else
+     pause 2
+     ;sendln '10.8.1    日本語'
+     ;2020年7月29日現在ではリリースされていない
+     SERVER     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\ja\*.tar.gz'
+     WEBADAPTOR ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\ja\*.tar.gz'
+     PORTAL     ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\ja\*.tar.gz'
+     DATASOTE   ='\\ejfilesvr\製品メディア\ArcGIS Enterprise\10.8.1\ja\*.tar.gz'
+     strconcat SERVERFILE '*.tar.gz'
+     strconcat WEBADAPTORFILE '*.tar.gz'
+     strconcat PORTALFILE '*.tar.gz'
+     strconcat DATASOTEFILE '*.tar.gz'
+    endif
+else
+endif
+
+
+setsync 1
+if adaptordl=1 then
+scpsend WEBADAPTOR WEBADAPTORFILE
+else
+endif
+
+if datastoredl=1 then
+scpsend DATASOTE DATASOTEFILE
+else
+endif
+
+
+if serverdl=1 then
+scpsend S_ORIZATION SERVERAUTH
+scpsend SERVER SERVERFILE
+else
+endif
+
+
+if portaldl=1 then
+scpsend P_ORIZATION PORTOAUTH
+scpsend PORTAL PORTALFILE
+else
+endif
+
+pause  600

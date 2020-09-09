@@ -1,0 +1,21 @@
+
+
+include '99_login.ttl'
+
+pause 1
+
+;;;Enterprise ‚Ì‰ð“€
+MOVE = 'cd Download'
+
+pause 1
+;
+UNZIP = 'find -type f -name "*.tar.gz" -exec tar zvxf {} \; | tee -a '
+strconcat UNZIP LOGFILENAME
+;sendln UNZIP
+pause 3
+flushrecv
+wait ']$'
+pause 1
+
+exit
+

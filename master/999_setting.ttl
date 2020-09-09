@@ -1,0 +1,58 @@
+
+
+IPADDR = '*.*.*.*'         ;IPアドレス
+MASTERUSER = 'root'        ;ここは変更しないでください。
+PASSWORD = 'PassW0rd'      ;rootパスワード
+LOCALUSER = 'esrij'       ;localuser名
+LOCALPASSWORD = 'PassW0rd' ;localパスワード
+FQDN = 'esrij.local.com'      ;FQDN
+
+;webサイト設定
+;Server site アカウント名とパスワードを設定してください。
+SERVERSITEUSER = 'siteadmin'
+SERVERSITEPASS = 'PassW0rd'
+
+;Portal site アカウント名とパスワードを設定してください。
+PORTALSITEUSER = 'portaladmin'
+PORTALSITEPASS = 'PassW0rd'
+
+SERVERKEY = 'PassW0rd'
+
+;TOMCATのディレクトリを使用環境に合わせて変更してください。
+;Webadaptorのwarファイルの配置場所になります。
+TOMCATAPPS = '/usr/share/tomcat/webapps/'
+
+;Portalコンテンツディレクトリ(以下はDefault)
+PORTALCD = '$HOME/arcgis/portal/usr/arcgisportal'
+
+; createportal ユーティリティのプロパティ ファイル(以下はDefault)
+CPORTAL = '$HOME/arcgis/portal/tools/createportal'
+
+;ルート サーバー ディレクトリ(以下はDefault)
+RSERVERD = '$HOME/arcgis/server/usr/directories'
+
+;ArcGIS Server サイトの構成ストア
+SERVERID = '$HOME/arcgis/server/usr/config-store'
+
+;createsite ユーティリティのプロパティ ファイル
+CSERVER = '$HOME/arcgis/server/tools/createsite'
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;50_get_enterpriseマクロで取得したものはrenameして以下のnameとなっています。
+;アーカイブ取得先
+APATH = 'cd $HOME/Downloads'
+
+;ArcGIS Serverの認証ファイル     例)/home/pink/Downloads/adv_authorization.ecp
+SERVERECPFILE    = '$HOME/Downloads/server_adv_authorization.ecp'
+
+;Portal for ArcGISの認証ファイル 例)/home/pink/Downloads/ALLAPPS_ArcGIS_Enterprise_Portal_107_257585_20190329.json
+PORTALFILE       = '$HOME/Downloads/authorization.json'
+
+;=====================================================================
+;各LOGファイル($HOME/Downloads/以下で取得されます)
+LOGFILENAME      = 'install_log.txt'
+SERVERLOGFILE    = 'server_install_log.txt'
+DATASTORELOGFILE = 'datastore_install_log.txt'
+PORTALLOGFILE    = 'portal_install_log.txt'
+WEBADAPLOGFILE   = 'webadaptor_install_log.txt'
+;=====================================================================

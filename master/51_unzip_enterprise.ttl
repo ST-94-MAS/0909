@@ -1,0 +1,23 @@
+;=====================================================================
+; šArcGIS Enterprise‚ÌInstaller‚ğ‰ğ“€‚µ‚Ü‚·Bš
+; š’ˆÓF$HOME/DownloadsˆÈ‰º‚É‚ ‚é".tar.gz"Œ`®‚Ì‚à‚Ì
+;=====================================================================
+
+include '99_login.ttl'
+
+pause 1
+
+;;;Enterprise ‚Ì‰ğ“€
+sendln APATH
+
+pause 1
+UNZIP = 'find -type f -name "*.tar.gz" -exec tar zvxf {}  \; | tee -a '
+strconcat UNZIP LOGFILENAME
+sendln UNZIP
+pause 3
+flushrecv
+wait ']$'
+pause 1
+
+exit
+

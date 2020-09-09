@@ -1,0 +1,56 @@
+;=====================================================================
+; ★ArcGIS Web Adaptor Install後 Adaptor経由でServerに接続する マクロ★
+;=====================================================================
+
+include '99_login.ttl'
+
+sendln
+sendln
+sendln
+sendln
+
+pause 3
+sendln 'cd $HOME/arcgis/'
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS Web Adaptor 経由でServerに接続する
+;;server 自動起動
+pause 3
+sendln 'su'
+pause 13
+sendln PASSWORD
+pause 15
+sendln
+sendln
+;pause 1
+sendln 'find ./ -type f -name "*.service" -exec cp -f {} /etc/systemd/system \;'
+pause 15
+sendln
+sendln 'find /etc/systemd/system -type f -name "arcgis*" -exec chmod 600 {} \;'
+pause 8
+;ビッグ データ ストアを構成する場合以下のコメントアウトを外してください
+;sendln 'vi /etc/systemd/system/arcgisdatastore.service'
+;pause 2
+;sendln '/LimitNOFILE=65536'
+;pause 1
+;send '^'
+;send 'x'
+;sendln '/LimitNPROC=25059'
+;pause 1
+;send '^'
+;send 'x'
+;sendln '/LimitAS=infinity'
+;pause 1
+;send '^'
+;send 'x'
+;sendln '/LimitFSIZE=infinity'
+;pause 1
+;send '^'
+;send 'x'
+;sendln ':wq'
+;pause 1
+sendln 'find /etc/systemd/system -type f -name "arcgis*" -exec systemctl enable {} \;'
+pause 10
+sendln 'exit'
+pause 3
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

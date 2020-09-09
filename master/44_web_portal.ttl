@@ -1,0 +1,43 @@
+;=====================================================================
+; ★ArcGIS Web Adaptor Install後 Adaptor経由でPortalに接続する マクロ★
+;=====================================================================
+
+include '99_login.ttl'
+
+sendln
+sendln
+sendln
+sendln
+
+pause 150
+sendln
+sendln
+sendln 'cd $HOME/arcgis/web*'
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS Web Adaptor 経由でPortalに接続する
+
+MAKEWEBADAPOR = 'find ./ -type f -name "configurewebadaptor.sh" -exec {} -m '
+strconcat MAKEWEBADAPOR 'portal '
+strconcat MAKEWEBADAPOR '-w '
+strconcat MAKEWEBADAPOR 'https://'
+strconcat MAKEWEBADAPOR FQDN
+strconcat MAKEWEBADAPOR '/portal/webadaptor'
+strconcat MAKEWEBADAPOR ' -g '
+strconcat MAKEWEBADAPOR 'https://'
+strconcat MAKEWEBADAPOR FQDN
+strconcat MAKEWEBADAPOR ':7443'
+strconcat MAKEWEBADAPOR ' -u '
+strconcat MAKEWEBADAPOR PORTALSITEUSER
+strconcat MAKEWEBADAPOR ' -p '
+strconcat MAKEWEBADAPOR PORTALSITEPASS
+strconcat MAKEWEBADAPOR ' -a '
+strconcat MAKEWEBADAPOR 'true '
+strconcat MAKEWEBADAPOR ' \; | tee -a $HOME/Downloads/'
+strconcat MAKEWEBADAPOR WEBADAPLOGFILE
+sendln MAKEWEBADAPOR
+pause 3
+flushrecv
+wait ']$'
+pause 11
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

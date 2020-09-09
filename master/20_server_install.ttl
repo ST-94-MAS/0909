@@ -1,0 +1,68 @@
+;=====================================================================
+; ★ArcGIS Server Install マクロ★
+;=====================================================================
+
+include '99_login.ttl'
+
+sendln
+sendln
+sendln
+sendln
+
+pause 3
+sendln APATH
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;ArcGIS Server の解凍 必要であればコメントを外してください。
+;sendln
+;pause 1
+;sendln 'find -type f -name "*Server*.tar.gz" -exec tar zvxf {} \;'
+;pause 1
+;flushrecv
+;wait ']$'
+;pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS ServerのInstall
+pause 2
+sendln
+sendln
+SERVERINSTALL= 'find ./*Server* -type f -name "Setup" -exec {} -m silent -l yes -a '
+strconcat SERVERINSTALL SERVERECPFILE
+strconcat SERVERINSTALL ' -d '
+strconcat SERVERINSTALL '$HOME/arcgis/server/'
+strconcat SERVERINSTALL ' \; | tee -a $HOME/Downloads/'
+strconcat SERVERINSTALL SERVERLOGFILE
+sendln SERVERINSTALL
+pause 1
+flushrecv
+wait ']$'
+pause 1
+pause 30
+sendln
+sendln
+pause 2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS Serverのサイトの作成
+sendln 'cd $HOME/arcgis/server'
+pause 2
+MAKEWEBSERVER = 'find ./ -type f -name "createsite.sh" -exec {} -u '
+strconcat MAKEWEBSERVER SERVERSITEUSER
+strconcat MAKEWEBSERVER ' -p '
+strconcat MAKEWEBSERVER SERVERSITEPASS
+strconcat MAKEWEBSERVER ' -d '
+strconcat MAKEWEBSERVER RSERVERD   ;ルート サーバー ディレクトリ(default値)
+strconcat MAKEWEBSERVER ' -c '
+strconcat MAKEWEBSERVER SERVERID  ;ArcGIS Server サイトの構成ストア(default値)
+strconcat MAKEWEBSERVER ' \; | tee -a $HOME/Downloads/'
+strconcat MAKEWEBSERVER SERVERLOGFILE
+;messagebox MAKEWEBSERVER 'debug1'
+sendln MAKEWEBSERVER
+pause 3
+flushrecv
+wait ']$'
+pause 1
+sendln
+sendln
+sendln
+exit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

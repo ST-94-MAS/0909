@@ -1,0 +1,38 @@
+;=====================================================================
+; ★ArcGIS Web Adaptor Install後 warファイルコピー マクロ★
+;=====================================================================
+
+include '99_login.ttl'
+
+sendln
+sendln
+sendln
+sendln
+pause 3
+sendln 'su '
+pause 8
+sendln PASSWORD
+sendln
+sendln
+pause 13
+sendln 'cd /home'
+sendln
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;ArcGIS Web Adaptor がInstallされ生成された.warファイルをtomcatのwebappsにコピー
+SWARCOPY= 'find ./ -type f -name "arcgis.war" -exec  cp {} '
+strconcat SWARCOPY TOMCATAPPS
+strconcat SWARCOPY 'server.war'  ;serverに入る用として
+strconcat SWARCOPY ' \;'
+sendln SWARCOPY
+pause 20
+
+PWARCOPY= 'find ./ -type f -name "arcgis.war" -exec  cp {} '
+strconcat PWARCOPY TOMCATAPPS
+strconcat PWARCOPY 'portal.war'  ;portalに入る用として
+strconcat PWARCOPY ' \;'
+sendln PWARCOPY
+pause 20
+sendln 'exit'
+pause 3
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

@@ -1,0 +1,68 @@
+;=====================================================================
+; ★Portal for ArcGIS Install マクロ★
+;=====================================================================
+
+include '99_login.ttl'
+
+sendln
+sendln
+sendln
+sendln
+
+pause 3
+sendln APATH
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;Enterprise の解凍 必要であればコメントを外してください。
+;sendln
+;pause 1
+;sendln 'find -type f -name "Portal*.tar.gz" -exec tar zvxf {} \; | tee -a $HOME/Downloads/portal.txt '
+;pause 1
+;flushrecv
+;wait ']$'
+;pause 1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Portal for ArcGISのInstall
+pause 2
+sendln
+sendln 'find ./Portal* -type f -name "Setup" -exec {} -m silent -l yes \; | tee -a $HOME/Downloads/portal.txt'
+pause 1
+flushrecv
+wait ']$'
+pause 1
+pause 20
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Portal for ArcGISのサイトの作成
+sendln 'cd $HOME/arcgis/portal'
+pause 2
+MAKEWEBPORTAL = 'find ./ -type f -name "createportal.sh" -exec {} -fn '
+strconcat MAKEWEBPORTAL 'admin '
+strconcat MAKEWEBPORTAL '-ln '
+strconcat MAKEWEBPORTAL 'portal '
+strconcat MAKEWEBPORTAL '-u '
+strconcat MAKEWEBPORTAL PORTALSITEUSER
+strconcat MAKEWEBPORTAL ' -p '
+strconcat MAKEWEBPORTAL PORTALSITEPASS
+strconcat MAKEWEBPORTAL ' -e '
+strconcat MAKEWEBPORTAL 'porta@esrij.com'
+strconcat MAKEWEBPORTAL ' -qi '
+strconcat MAKEWEBPORTAL '1 '
+strconcat MAKEWEBPORTAL '-qa '
+strconcat MAKEWEBPORTAL 'Tokyo'
+strconcat MAKEWEBPORTAL ' -d '
+strconcat MAKEWEBPORTAL PORTALCD   ;コンテンツディレクトリ設定
+strconcat MAKEWEBPORTAL ' -lf '
+strconcat MAKEWEBPORTAL PORTALFILE
+strconcat MAKEWEBPORTAL '  \; | tee -a $HOME/Downloads/'
+strconcat MAKEWEBPORTAL PORTALLOGFILE
+sendln MAKEWEBPORTAL
+pause 5
+flushrecv
+wait ']$'
+pause 2
+sendln
+sendln
+sendln
+exit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+

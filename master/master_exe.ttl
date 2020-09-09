@@ -1,0 +1,57 @@
+;EnterPrise Linux版の自動セットアップツール
+;※\\ejfilesvr\製品メディア\ArcGIS Enterprise\からアーカイブを取得しています。
+;  そのためすでにローカルに持っている場合や別環境から取得する場合は
+
+;ArcGIS Enterprise Installer の取得
+include '50_get_enterprise.ttl'
+sendln
+pause 3
+
+;取得したInstallerの解凍
+;★注意★：$HOME/Downloads以下にある".tar.gz"形式のものをすべて解凍します。
+include '51_unzip_enterprise.ttl'
+sendln
+pause 3
+
+;;Portal for ArcGISのInstall
+include '10_portal_install.ttl'
+sendln
+pause 3
+
+;ArcGIS ServerのInstall
+include '20_server_install.ttl'
+sendln
+pause 3
+
+;ArcGIS DataStoreのInstall
+include '30_datastore_install.ttl'
+sendln
+pause 3
+
+;ArcGIS Web AdaptorのInstall
+include '40_webadaptor_install.ttl'
+sendln
+pause 3
+
+;warfile setting
+include '41_setting_warfile.ttl'
+sendln
+pause 3
+
+;ArcGIS ServerのInstall
+include '42_auto_start.ttl'
+sendln
+pause 3
+
+;Federation(Server)
+include '43_web_server.ttl'
+sendln
+pause 3
+
+;Federation(Portal)
+include '44_web_portal.ttl'
+sendln
+pause 3
+
+
+sendln'exit'

@@ -1,0 +1,30 @@
+
+:login
+
+include '999_setting.ttl'
+
+; コマンドオプション組立て
+COMMAND = IPADDR
+strconcat COMMAND ':22 /ssh /2 /auth=password /user='
+strconcat COMMAND LOCALUSER
+strconcat COMMAND ' /passwd='
+strconcat COMMAND LOCALPASSWORD
+
+
+; 接続
+connect COMMAND
+
+; 接続確認
+if result <> 2 then 
+    messagebox 'It could not be connected.' 'Connection Error' 
+    end 
+endif
+
+;Downloadsファイルがあるか確認する処理入れるかも
+DOWN = 'Downloads'
+getfileattr DOWN
+
+if result <> -1 then
+    messagebox 'It could not be connected.' 'Downloads file is Nothing ' 
+    end 
+endif
